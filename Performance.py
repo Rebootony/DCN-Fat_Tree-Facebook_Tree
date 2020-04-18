@@ -11,14 +11,27 @@ class fatTree():
         for i in range(K*K/2):
             aggSet = addSwitch("as"+str(i))
             edgeSet = addSwitch("es"+str(i))
-        for i in range(K*K):                        #customize
+        for i in range(K*K):                                        #customize
             hostSet = addHost("hs"+str(i))
 
-        for i in range(0, K*2, 2):
-            for j in range(0,K/2):
+        #core and agg
+        for i in range(0, K*K/2, 2):
+            for j in range(0,pow(K/2,2)/2):
                 self.addLink(self.coreSet[j], self.aggSet[i], bw=10) #bw is changable
+        for i in range(1, K*K/2, 2):
+            for j in range(pow(K/2,2)/2, pow(K/2,2)):
+                self.addLink(self.coreSet[j], self.aggSet[i], bw=10) #bw is changable
+        
+        #agg and edge
+        for i in range(0,K*K/2,2):
+            self.addLink(self.aggSet[i],self.edgeSet[i],bw=10)
+            self.addLink(self.aggSet[i],self.edgeSet[i+1],bw=10)
+        for i in range(1,K*K/2,2):
+            self.addLink(self.aggSet[i],self.edgeSet[i],bw=10)
+            self.addLink(self.aggSet[i],self.edgeSet[i-1],bw=10)
 
-        for i in range(1, K*2, 2):
-            for j in range(K/2, K):
-                self.addLink(self.coreSet[j], self.aggSet[i], bw=10) #bw is changable
+        #edge and host
+        for i in range(0,K*K,1):
+            self.addLink(self.edgeSet[i/2],self.hostSet[i],bw=10)
+
         
