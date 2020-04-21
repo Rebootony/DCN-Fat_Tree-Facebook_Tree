@@ -40,7 +40,9 @@ def perfTest():
     topo = fatTree(n=4)
     net = Mininet( topo=topo, controller=None)
     net.addController( 'ctr0', controller=RemoteController, ip='127.0.0.1', port=6633 ) 
-    net.start()
+    net.build()
+    CLI(net)
+    net.stop()
     pass
 
 if __name__ == "__main__":
